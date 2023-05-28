@@ -1,0 +1,295 @@
+mysql -u root -p
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.32 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use petcare;
+Database changed
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.03 sec)
+
+mysql> set autocommit=1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE FROM pets WHERE ID='7;
+    '> DELETE FROM pets WHERE ID='7';
+    '> ^C
+mysql> DELETE FROM pets WHERE ID='7';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`petcare`.`visits`, CONSTRAINT `visits_ibfk_2` FOREIGN KEY (`PET_ID`) REFERENCES `pets` (`ID`))
+mysql> INSERT INTO pets VALUES(8,Bella,2022-01-02,2);
+ERROR 1054 (42S22): Unknown column 'Bella' in 'field list'
+mysql> INSERT INTO pets(ID,NAME,DOB,owner_id) VALUES(8,Bella,2022-01-02,2);
+ERROR 1054 (42S22): Unknown column 'Bella' in 'field list'
+mysql> INSERT INTO pets VALUES(8,'Bella','2022-01-02',2);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  8 | Bella  | 2022-01-02 |        2 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delete from pets where id='8';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE from pets;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`petcare`.`visits`, CONSTRAINT `visits_ibfk_2` FOREIGN KEY (`PET_ID`) REFERENCES `pets` (`ID`))
+mysql> DELETE * from pets;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from pets' at line 1
+mysql> DELETE  from pets;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`petcare`.`visits`, CONSTRAINT `visits_ibfk_2` FOREIGN KEY (`PET_ID`) REFERENCES `pets` (`ID`))
+mysql> INSERT INTO pets VALUES(8,'Bella','2022-01-02',2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  8 | Bella  | 2022-01-02 |        2 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> DELETE FROM pets WHERE ID='8';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO pets VALUES(8,'Bella','2022-01-02',2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM pets WHERE ID='8';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO pets VALUES(8,'Bella','2022-01-02',2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  8 | Bella  | 2022-01-02 |        2 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> rollback to sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO pets VALUES(9,'Baby','2023-01-02',4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  9 | Baby   | 2023-01-02 |        4 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  9 | Baby   | 2023-01-02 |        4 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> DELETE FROM pets WHERE id='9';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
++----+--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from pets;
++----+--------+------------+----------+
+| ID | NAME   | DOB        | owner_id |
++----+--------+------------+----------+
+|  1 | Kale   | 2020-04-20 |        2 |
+|  2 | Khaire | 2018-10-01 |        2 |
+|  3 | Bella  | 2015-12-24 |        3 |
+|  4 | Lucky  | 2017-01-13 |        5 |
+|  5 | Hero   | 2012-06-12 |        7 |
+|  6 | Happy  | 2011-10-09 |        4 |
+|  7 | Bruno  | 2022-11-17 |        6 |
+|  9 | Baby   | 2023-01-02 |        4 |
++----+--------+------------+----------+
+8 rows in set (0.00 sec)
