@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const taskRouter = require("./routes/task");
 const userRouter = require("./routes/user");
+const multer = require("multer");
 
 const app = express();
 
@@ -10,12 +11,11 @@ mongoose
   .then(() => console.log("Connected to db"))
   .catch((err) => console.log(err.message));
 
-app.use(express.json());
+app.use(express.json());//middleware to use in body
 
 app.use("/api/task", taskRouter);
 app.use("/api/user", userRouter);
 
-const multer = require("multer");
 const User = [];
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 });
 const imageFilter = (req, file, cb) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf|docx|txt)$/)) {
-    cb(new Error("Only image files!"), false);
+    cb(new Error("Only image,pdf,text and word files!"), false);
   } else {
     cb(null, true);
   }

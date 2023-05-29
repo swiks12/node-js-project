@@ -4,17 +4,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const router = express.Router();
 
-const generateToken = (_id) => {
+const generateToken = (_id) => {//login pachi generate huncha
   const token = jwt.sign({ _id }, "asdlajsdlkjsalkdj", { expiresIn: "3d" });
   return token;
 };
 
 router.post("/signup", async (req, res) => {
   try {
-    // const username = req.body.username;
-    // const password = req.body.password;
     const { username, password } = req.body;
-
     if (!username){
       return res.status(400).json({msg:"Username is required"});
     }
