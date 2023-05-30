@@ -42,12 +42,12 @@ const upload = multer({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-app.post("/register", upload.array("file",3), (req, res) => {
+app.post("/upload", upload.array("file",3), (req, res) => {
   console.log(req.files);
   User.push({
     userid: req.body.userid,
     username: req.body.username,
-    displayPictures: req.files.map((file)=> file.filename),
+    displayfile: req.files.map((file)=> file.filename),
   });
   res.send({
     msg: "File uploaded",
